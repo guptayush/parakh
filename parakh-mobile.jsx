@@ -616,15 +616,7 @@ function Verdict({ name, result, onRestart, onRetake }) {
   return (
     <div className="m-screen">
       <div className="m-content m-top screen-enter">
-        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom: 12}}>
-          <Progress idx={4}/>
-          <span style={{fontFamily:'var(--mono)', fontSize:10, letterSpacing:'0.14em', color:'var(--ink-3)'}}>SEALED</span>
-        </div>
-
-        <div className="m-verdict-head">
-          <span>Assay <b>live</b></span>
-          <span>{ts}</span>
-        </div>
+        <p className="m-verdict-eyebrow"><b>{subject}</b> · {ts}</p>
 
         <div className="m-verdict-card">
           <div className="m-verdict-stamp">
@@ -639,15 +631,9 @@ function Verdict({ name, result, onRestart, onRetake }) {
             </svg>
             <div className="deva-c" style={{ color: theme.color }}>{stampDeva}</div>
           </div>
-          <p className="m-verdict-eyebrow"><b>03 / 03</b> · verdict {name && <>· {name.split(" ")[0]}</>}</p>
           <h1 className="m-verdict-h">{headline}</h1>
           {devaLine && <p className="m-verdict-deva">{devaLine}</p>}
           {sub && <p className="m-verdict-sub">{sub}</p>}
-          <div className="m-verdict-meta">
-            <div className="cell">Subject<span className="v">{subject}</span></div>
-            <div className="cell">Verdict<span className="v" style={{color: theme.color}}>{stampEn}</span></div>
-            {result?.emoji && <div className="cell">·<span className="v" style={{fontSize: 22}}>{result.emoji}</span></div>}
-          </div>
         </div>
 
         {list.length > 0 && (
