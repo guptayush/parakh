@@ -738,11 +738,9 @@ function App() {
   if (cur === "verdict") screen = <Verdict name={user?.name} result={result} onRestart={restart} onRetake={goToScanner}/>;
 
   return (
-    <IOSDevice>
-      <div data-screen-label={`${String(idx+1).padStart(2,'0')} ${cur}`} style={{height:'100%'}}>
-        {screen}
-      </div>
-    </IOSDevice>
+    <div data-screen-label={`${String(idx+1).padStart(2,'0')} ${cur}`} style={{height:'100%'}}>
+      {screen}
+    </div>
   );
 }
 

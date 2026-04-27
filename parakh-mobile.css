@@ -28,22 +28,20 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body {
-  background: #1a1815;
+  background: var(--paper);
   color: var(--ink);
   font-family: var(--body);
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   overflow-x: hidden;
-  display: grid;
-  place-items: center;
 }
 
-#root { display: grid; place-items: center; min-height: 100vh; padding: 24px 0; }
+#root { min-height: 100vh; max-width: 480px; margin: 0 auto; }
 
-/* ---------- shared phone-screen container ---------- */
+/* ---------- shared screen container ---------- */
 .m-screen {
   position: relative;
-  height: 100%;
+  min-height: 100vh;
   width: 100%;
   background: var(--paper);
   display: flex;
@@ -62,8 +60,8 @@ body {
     radial-gradient(circle at 80% 70%, rgba(20,18,16,0.020) 0, transparent 40%);
 }
 
-/* status-bar safe area on iPhone — clears the dynamic island + time */
-.m-top { padding-top: 78px; }
+/* top padding — uses safe-area on real mobile, default on desktop */
+.m-top { padding-top: max(28px, env(safe-area-inset-top)); }
 .m-content {
   position: relative;
   z-index: 2;
