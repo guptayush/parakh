@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Parakh — Camera test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Inter:wght@400;500;600;700&family=Tiro+Devanagari+Hindi&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #141210; --paper: #F4EEE2; --paper-card: #FBF7EE;
+    --line: #DCD2BD; --tilak: #C25A1F; --ink-3: #5E5650; --ink-4: #9A9088;
+    --pass: #5C7C3E; --hold: #B98512; --skip: #A33218;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    padding: 24px;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    font-variation-settings: "opsz" 144;
+    font-size: 38px;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  h1 .deva { font-family: 'Tiro Devanagari Hindi'; color: var(--tilak); font-style: normal; }
+  .lede {
+    font-size: 14px;
+    color: var(--ink-3);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+  .stage {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .stage h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 12px;
+  }
+  video, canvas {
+    width: 100%;
+    border-radius: 12px;
+    background: #000;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+  }
+  canvas { display: none; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  button {
+    flex: 1;
+    height: 48px;
+    border: 0;
+    border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 120ms ease, opacity 180ms;
+    min-width: 140px;
+  }
+  button.primary { background: var(--ink); color: var(--paper); }
+  button.tilak { background: var(--tilak); color: #fff; }
+  button.ghost { background: transparent; border: 1px solid var(--line); color: var(--ink); }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  button:active:not(:disabled) { transform: scale(0.97); }
+
+  .status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-3);
+    padding: 12px 14px;
+    background: var(--paper);
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    margin-top: 12px;
+    word-break: break-word;
+  }
+  .status.error { color: var(--skip); border-color: var(--skip); }
+  .status.success { color: var(--pass); border-color: var(--pass); }
+  pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    line-height: 1.55;
+    background: #fff;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    margin-top: 12px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .verdict-card {
+    margin-top: 14px;
+    padding: 18px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+  }
+  .verdict-stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .verdict-stamp.pass { background: var(--pass); }
+  .verdict-stamp.hold { background: var(--hold); }
+  .verdict-stamp.skip { background: var(--skip); }
+  .verdict-stamp.unknown, .verdict-stamp.retake { background: var(--ink-3); }
+  .verdict-stamp .deva-tag {
+    font-family: 'Tiro Devanagari Hindi';
+    font-size: 13px;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .verdict-headline {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 26px;
+    letter-spacing: -0.018em;
+    margin-bottom: 4px;
+  }
+  .verdict-deva {
+    font-family: 'Tiro Devanagari Hindi';
+    color: var(--tilak);
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  .verdict-sub { font-size: 14px; line-height: 1.5; color: var(--ink-3); margin-bottom: 14px; }
+  .verdict-list { list-style: none; padding: 12px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: grid; gap: 10px; margin-bottom: 14px; }
+  .verdict-list li { display: grid; grid-template-columns: 12px 1fr auto; gap: 10px; align-items: center; font-size: 13px; }
+  .verdict-list .pip { width: 8px; height: 8px; border-radius: 50%; background: var(--pass); }
+  .verdict-list .pip.hold { background: var(--hold); }
+  .verdict-list .pip.skip { background: var(--skip); }
+  .verdict-list .meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-3); letter-spacing: 0.08em; }
+  .check-row { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .check-row:last-child { border-bottom: 0; }
+  .check-row .icon { font-size: 22px; }
+  .check-row strong { display: block; font-size: 13px; margin-bottom: 2px; }
+  .check-row span { font-size: 12px; color: var(--ink-3); line-height: 1.4; }
+</style>
+</head>
+<body>
+  <h1><span class="deva">परख</span> · camera test</h1>
+  <p class="lede">Test the full pipeline: camera → capture → /api/scan → verdict. This is a dev page, not the real product UI.</p>
+
+  <div class="stage">
+    <h2>1. Camera</h2>
+    <video id="video" autoplay muted playsinline></video>
+    <canvas id="canvas"></canvas>
+    <div class="row">
+      <button class="primary" id="startBtn">Start camera</button>
+      <button class="tilak" id="captureBtn" disabled>Capture &amp; scan</button>
+      <button class="ghost" id="stopBtn" disabled>Stop</button>
+    </div>
+    <div class="status" id="status">Tap "Start camera" to begin.</div>
+  </div>
+
+  <div class="stage" id="resultStage" style="display: none;">
+    <h2>2. Verdict</h2>
+    <div id="verdictCard"></div>
+    <details style="margin-top: 14px;">
+      <summary style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-3); cursor: pointer; letter-spacing: 0.1em; text-transform: uppercase;">Raw JSON</summary>
+      <pre id="rawJson"></pre>
+    </details>
+  </div>
+
+<script>
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  const startBtn = document.getElementById('startBtn');
+  const captureBtn = document.getElementById('captureBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const statusEl = document.getElementById('status');
+  const resultStage = document.getElementById('resultStage');
+  const verdictCard = document.getElementById('verdictCard');
+  const rawJson = document.getElementById('rawJson');
+
+  let stream = null;
+
+  function setStatus(msg, kind = '') {
+    statusEl.textContent = msg;
+    statusEl.className = 'status' + (kind ? ' ' + kind : '');
+  }
+
+  async function startCamera() {
+    setStatus('Requesting camera permission…');
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { ideal: 'environment' },
+          width: { ideal: 1920 },
+          height: { ideal: 1440 },
+        },
+        audio: false,
+      });
+      video.srcObject = stream;
+      await video.play();
+      startBtn.disabled = true;
+      captureBtn.disabled = false;
+      stopBtn.disabled = false;
+      setStatus(`Camera ready · ${video.videoWidth}×${video.videoHeight}`, 'success');
+    } catch (err) {
+      console.error(err);
+      if (err.name === 'NotAllowedError') {
+        setStatus('Permission denied. Enable camera in browser settings → reload.', 'error');
+      } else if (err.name === 'NotFoundError') {
+        setStatus('No camera hardware found.', 'error');
+      } else {
+        setStatus(`Camera error: ${err.message}`, 'error');
+      }
+    }
+  }
+
+  function stopCamera() {
+    if (stream) {
+      stream.getTracks().forEach(t => t.stop());
+      stream = null;
+    }
+    video.srcObject = null;
+    startBtn.disabled = false;
+    captureBtn.disabled = true;
+    stopBtn.disabled = true;
+    setStatus('Camera stopped.');
+  }
+
+  async function captureAndScan() {
+    if (!stream) return;
+    captureBtn.disabled = true;
+    setStatus('Capturing & uploading…');
+
+    // Downscale to 1280×960 for speed + cost
+    const targetW = 1280, targetH = 960;
+    canvas.width = targetW;
+    canvas.height = targetH;
+    canvas.getContext('2d').drawImage(video, 0, 0, targetW, targetH);
+
+    const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.82));
+    const dataUrl = await new Promise(r => {
+      const fr = new FileReader();
+      fr.onloadend = () => r(fr.result);
+      fr.readAsDataURL(blob);
+    });
+
+    const sizeKB = Math.round(dataUrl.length * 0.75 / 1024);
+    setStatus(`Uploading ${sizeKB} KB to /api/scan…`);
+
+    const t0 = Date.now();
+    try {
+      const res = await fetch('/api/scan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: dataUrl }),
+      });
+      const json = await res.json();
+      const ms = Date.now() - t0;
+
+      if (!res.ok) {
+        setStatus(`Scan failed (${res.status}): ${json.error || 'unknown'}`, 'error');
+        rawJson.textContent = JSON.stringify(json, null, 2);
+        resultStage.style.display = 'block';
+        return;
+      }
+
+      setStatus(`Verdict received in ${ms}ms · ${json.verdict?.toUpperCase()}`, 'success');
+      renderVerdict(json);
+      rawJson.textContent = JSON.stringify(json, null, 2);
+      resultStage.style.display = 'block';
+    } catch (err) {
+      setStatus(`Network error: ${err.message}`, 'error');
+    } finally {
+      captureBtn.disabled = false;
+    }
+  }
+
+  function renderVerdict(v) {
+    const stampClass = v.verdict || 'unknown';
+    const checksHtml = (v.checks && v.checks.length)
+      ? `<div style="margin-top: 14px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px;">Quick checks</div>
+          ${v.checks.map(c => `
+            <div class="check-row">
+              <span class="icon">${c.icon === 'nose' ? '👃' : c.icon === 'hand' ? '✋' : '👁️'}</span>
+              <div><strong>${c.title}</strong><span>${c.body}</span></div>
+            </div>
+          `).join('')}
+         </div>`
+      : '';
+    const listHtml = (v.list && v.list.length)
+      ? `<ul class="verdict-list">${v.list.map(r => `
+          <li><span class="pip ${r.pip}"></span><span>${r.label}</span><span class="meta">${r.status}</span></li>
+        `).join('')}</ul>`
+      : '';
+    verdictCard.innerHTML = `
+      <div class="verdict-card">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+          <span style="font-size: 28px;">${v.emoji || '❓'}</span>
+          <span style="font-family: 'Fraunces', serif; font-size: 22px; letter-spacing: -0.012em;">${v.name || 'Unknown'}</span>
+        </div>
+        <span class="verdict-stamp ${stampClass}">
+          ${v.stampEn || '?'}
+          ${v.stampDeva && v.stampDeva !== '—' ? `<span class="deva-tag">· ${v.stampDeva}</span>` : ''}
+        </span>
+        <h3 class="verdict-headline">${v.headline || '—'}</h3>
+        ${v.deva && v.deva !== '—' ? `<p class="verdict-deva">${v.deva}</p>` : ''}
+        <p class="verdict-sub">${v.sub || ''}</p>
+        ${listHtml}
+        ${checksHtml}
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-4); letter-spacing: 0.08em; margin-top: 12px;">
+          ${v.latency_ms ? v.latency_ms + 'MS · ' : ''}${(v.model || '').toUpperCase()}
+        </p>
+      </div>
+    `;
+  }
+
+  startBtn.addEventListener('click', startCamera);
+  captureBtn.addEventListener('click', captureAndScan);
+  stopBtn.addEventListener('click', stopCamera);
+</script>
+</body>
+</html>

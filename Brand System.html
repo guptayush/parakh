@@ -1,0 +1,898 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Parakh — Brand System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=Tiro+Devanagari+Hindi&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        #141210;
+    --ink-2:      #2A2622;
+    --ink-3:      #5E5650;
+    --ink-4:      #9A9088;
+    --paper:      #F4EEE2;
+    --paper-2:    #ECE3D2;
+    --paper-3:    #DCCDB0;
+    --paper-card: #FBF7EE;
+    --line:       #DCD2BD;
+
+    --tilak:      #C25A1F;     /* primary accent — saffron/sindoor */
+    --tilak-deep: #8E3E12;
+    --tilak-soft: #F1D5BE;
+    --gold:       #B68A2E;     /* secondary, hallmark gold */
+
+    --pass:       #5C7C3E;
+    --pass-2:     #DEE5C8;
+    --hold:       #B98512;
+    --hold-2:     #F0DDB1;
+    --skip:       #A33218;
+    --skip-2:     #EAC8BD;
+
+    --display: 'Fraunces', 'Cormorant Garamond', Georgia, serif;
+    --deva:    'Tiro Devanagari Hindi', 'Mangal', serif;
+    --body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono:    'JetBrains Mono', 'SFMono-Regular', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .page { max-width: 1180px; margin: 0 auto; padding: 56px 40px 96px; }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 48px;
+    align-items: end;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0 0 24px;
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-variation-settings: "opsz" 144;
+    font-size: clamp(64px, 9vw, 108px);
+    line-height: 0.96;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+    text-wrap: balance;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--tilak);
+    font-weight: 300;
+  }
+  .hero h1 .deva {
+    font-family: var(--deva);
+    color: var(--tilak);
+    font-weight: 400;
+    font-size: 0.78em;
+    margin-right: 0.08em;
+  }
+  .hero .lede {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 50ch;
+    margin: 0;
+  }
+  .hero .lede em { font-family: var(--display); font-style: italic; color: var(--tilak); font-weight: 400; }
+  .hero-meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--ink-3);
+    display: flex; flex-direction: column; gap: 8px;
+    text-align: right;
+  }
+  .hero-meta b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- SECTION ---------- */
+  .section {
+    padding: 56px 0 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section:last-of-type { border-bottom: 0; }
+  .section-head {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 24px;
+    align-items: baseline;
+    margin-bottom: 28px;
+  }
+  .section-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+  }
+  .section-title {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 32px;
+    letter-spacing: -0.012em;
+    margin: 0 0 6px;
+  }
+  .section-title em { font-style: italic; color: var(--tilak); font-weight: 300; }
+  .section-sub {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-3);
+    margin: 0;
+    max-width: 70ch;
+  }
+
+  /* ---------- LOGO ---------- */
+  .logo-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 16px;
+  }
+  .logo-card {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 40px 36px 28px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 260px;
+  }
+  .logo-card.dark { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .logo-card.tilak { background: var(--tilak); color: #fff; border-color: var(--tilak); }
+  .logo-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.55;
+    margin-top: 28px;
+  }
+
+  /* Wordmark — bilingual lockup */
+  .wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .wordmark .latin {
+    font-family: var(--display);
+    font-weight: 400;
+    font-variation-settings: "opsz" 144;
+    font-size: 76px;
+    line-height: 0.92;
+    letter-spacing: -0.012em;
+    color: currentColor;
+  }
+  .wordmark .deva {
+    font-family: var(--deva);
+    font-size: 56px;
+    line-height: 1;
+    color: var(--tilak);
+  }
+  .logo-card.dark .wordmark .deva { color: var(--tilak); }
+  .logo-card.tilak .wordmark .deva { color: #fff; opacity: 0.9; }
+  .wordmark .rule {
+    width: 1px;
+    align-self: stretch;
+    background: currentColor;
+    opacity: 0.18;
+    margin: 4px 0;
+  }
+  .wordmark-sm .latin { font-size: 44px; }
+  .wordmark-sm .deva { font-size: 32px; }
+  .wordmark-sm { gap: 12px; }
+
+  /* ---------- ANATOMY (assay stamp) ---------- */
+  .anatomy {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .anatomy-card {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 32px;
+    position: relative;
+  }
+  .stamp-wrap {
+    display: grid;
+    place-items: center;
+    padding: 12px 0 16px;
+    position: relative;
+  }
+  .stamp {
+    width: 180px;
+    height: 180px;
+    position: relative;
+  }
+  .stamp svg { width: 100%; height: 100%; display: block; }
+  .stamp .deva-center {
+    position: absolute;
+    inset: 0;
+    display: grid; place-items: center;
+    font-family: var(--deva);
+    font-size: 64px;
+    color: var(--tilak);
+    line-height: 1;
+  }
+  .stamp.dark .deva-center { color: var(--tilak); }
+  .stamp.dark .ring { stroke: var(--paper); }
+  .stamp.dark .micro { fill: var(--paper); }
+  .anatomy-card .callouts {
+    list-style: none;
+    padding: 0; margin: 16px 0 0;
+    display: grid; gap: 6px;
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+  .anatomy-card .callouts span {
+    font-family: var(--mono);
+    color: var(--tilak);
+    font-weight: 600;
+    margin-right: 10px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+
+  /* construction diagram */
+  .construct {
+    position: relative;
+    height: 220px;
+    padding: 14px 0;
+  }
+  .construct-rule {
+    position: absolute; left: 0; right: 0;
+    border-top: 1px dashed var(--paper-3);
+  }
+  .construct-rule span {
+    position: absolute;
+    left: 4px; top: -7px;
+    background: var(--paper-card);
+    padding: 0 6px;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--ink-4);
+    letter-spacing: 0.04em;
+  }
+  .construct-rule.cap  { top: 30px; }
+  .construct-rule.xh   { top: 90px; }
+  .construct-rule.base { top: 178px; }
+  .construct-mark {
+    position: absolute;
+    left: 60px;
+    top: 24px;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 168px;
+    line-height: 0.92;
+    letter-spacing: -0.018em;
+    color: var(--ink);
+  }
+  .construct-callout {
+    position: absolute;
+    top: 38px; right: 12px;
+    width: 150px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .co-line { display: inline-block; width: 36px; height: 1px; background: var(--ink-4); flex-shrink: 0; }
+  .co-text { font-family: var(--mono); font-size: 10px; color: var(--ink-4); line-height: 1.4; }
+  .co-text b { color: var(--ink-3); font-weight: 600; letter-spacing: 0.04em; }
+
+  /* ---------- COLOR ---------- */
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .swatch {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .swatch-chip {
+    height: 130px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 14px;
+    color: #fff;
+  }
+  .swatch-chip.on-light { color: var(--ink); }
+  .swatch-name { font-family: var(--display); font-weight: 500; font-style: italic; font-size: 17px; letter-spacing: -0.005em; }
+  .swatch-tag  { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; font-weight: 600; }
+  .swatch-meta {
+    padding: 12px 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    display: flex; justify-content: space-between;
+  }
+  .swatch-meta b { color: var(--ink); font-weight: 600; letter-spacing: 0.04em; }
+
+  .verdict-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 20px;
+  }
+  .verdict {
+    border-radius: 12px;
+    padding: 22px;
+    border: 1px solid var(--line);
+    background: var(--paper-card);
+    position: relative;
+    overflow: hidden;
+  }
+  .verdict-bar {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+  }
+  .verdict.pass .verdict-bar { background: var(--pass); }
+  .verdict.hold .verdict-bar { background: var(--hold); }
+  .verdict.skip .verdict-bar { background: var(--skip); }
+
+  .verdict-stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+  }
+  .verdict-stamp .deva-tag {
+    font-family: var(--deva);
+    font-size: 13px;
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: 400;
+    line-height: 1;
+  }
+  .verdict.pass .verdict-stamp { background: var(--pass); }
+  .verdict.hold .verdict-stamp { background: var(--hold); }
+  .verdict.skip .verdict-stamp { background: var(--skip); }
+  .verdict-headline {
+    font-family: var(--display);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 26px;
+    letter-spacing: -0.012em;
+    margin: 18px 0 4px;
+    color: var(--ink);
+  }
+  .verdict-sub {
+    font-size: 14px; line-height: 1.5;
+    color: var(--ink-2);
+    margin: 0;
+  }
+
+  /* ---------- TYPE ---------- */
+  .type-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .type-card {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px;
+  }
+  .type-card .label {
+    font-family: var(--mono);
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 14px;
+  }
+  .type-card .label b { color: var(--ink); font-weight: 600; }
+  .type-spec {
+    font-family: var(--mono);
+    font-size: 11px; color: var(--ink-3);
+    display: flex; gap: 16px; flex-wrap: wrap;
+    margin-top: 16px;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
+  .type-spec b { color: var(--ink); font-weight: 600; letter-spacing: 0.04em; }
+
+  .display-sample {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 56px;
+    line-height: 1.0;
+    letter-spacing: -0.018em;
+    margin: 0;
+    color: var(--ink);
+  }
+  .display-sample em { color: var(--tilak); font-style: italic; font-weight: 300; }
+  .deva-sample {
+    font-family: var(--deva);
+    font-size: 52px;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.1;
+  }
+  .deva-sample em { color: var(--tilak); font-style: normal; }
+  .body-sample {
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    margin: 0;
+    max-width: 38ch;
+  }
+  .mono-sample {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.7;
+  }
+  .mono-sample .dim { color: var(--ink-4); }
+
+  /* ---------- VOICE ---------- */
+  .voice-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .voice-card {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 24px;
+  }
+  .voice-tag {
+    font-family: var(--mono);
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--tilak);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .voice-line {
+    font-family: var(--display);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 24px;
+    line-height: 1.2;
+    letter-spacing: -0.012em;
+    margin: 0 0 16px;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+  .voice-line .deva { font-family: var(--deva); font-style: normal; color: var(--tilak); font-size: 0.85em; }
+  .voice-do, .voice-dont {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 4px 0 0;
+  }
+  .voice-do  { color: var(--pass); }
+  .voice-dont { color: var(--skip); text-decoration: line-through; opacity: 0.7; }
+
+  /* ---------- IN USE ---------- */
+  .preview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .phone {
+    aspect-ratio: 9 / 19.5;
+    border-radius: 28px;
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    overflow: hidden;
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+  .phone.dark { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .phone-status {
+    display: flex; justify-content: space-between;
+    padding: 14px 22px 0;
+    font-family: var(--mono);
+    font-size: 11px;
+  }
+  .phone .status-dots { display: inline-flex; gap: 3px; }
+  .phone .status-dots i { width: 3px; height: 3px; background: currentColor; border-radius: 50%; opacity: 0.8; display: inline-block; }
+
+  /* splash with stamp */
+  .pv1-stage { flex: 1; display: grid; place-items: center; padding: 0 24px; }
+  .pv1-stamp { width: 130px; height: 130px; position: relative; }
+  .pv1-stamp svg { width: 100%; height: 100%; }
+  .pv1-stamp .deva-center {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    font-family: var(--deva);
+    font-size: 46px;
+    color: var(--tilak);
+    line-height: 1;
+  }
+  .pv1-mark {
+    font-family: var(--display); font-weight: 400; font-size: 44px;
+    letter-spacing: -0.012em;
+    margin-top: 24px;
+    color: var(--paper);
+  }
+  .pv1-tag { text-align: center; padding: 0 20px 28px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(244,238,226,0.6); }
+
+  /* scan */
+  .pv3-stage {
+    flex: 1; position: relative;
+    background: radial-gradient(120% 80% at 50% 30%, #2a221a 0%, #0c0805 70%);
+  }
+  .pv3-reticle {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -56%);
+    width: 60%; aspect-ratio: 1/1;
+  }
+  .pv3-cor { position: absolute; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.85); }
+  .pv3-cor.tl { top: 0; left: 0; border-right: 0; border-bottom: 0; border-top-left-radius: 4px; }
+  .pv3-cor.tr { top: 0; right: 0; border-left: 0; border-bottom: 0; border-top-right-radius: 4px; }
+  .pv3-cor.bl { bottom: 0; left: 0; border-right: 0; border-top: 0; border-bottom-left-radius: 4px; }
+  .pv3-cor.br { bottom: 0; right: 0; border-left: 0; border-top: 0; border-bottom-right-radius: 4px; }
+  .pv3-scan { position: absolute; top: 50%; left: 6%; right: 6%; height: 2px; background: linear-gradient(90deg, transparent, var(--tilak), transparent); filter: drop-shadow(0 0 8px rgba(194,90,31,0.6)); }
+  .pv3-cap { position: absolute; bottom: 24px; left: 0; right: 0; text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(244,238,226,0.7); }
+
+  /* verdict card */
+  .pv2-body { flex: 1; padding: 20px 22px 22px; display: flex; flex-direction: column; }
+  .pv2-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+  .pv2-stamp {
+    align-self: flex-start;
+    background: var(--pass); color: #fff;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700;
+    padding: 5px 11px; border-radius: 4px;
+    margin-bottom: 14px;
+  }
+  .pv2-h {
+    font-family: var(--display); font-weight: 400; font-style: italic;
+    font-size: 32px; line-height: 1.0; letter-spacing: -0.018em;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  .pv2-deva {
+    font-family: var(--deva); font-size: 22px;
+    color: var(--tilak); margin: 0 0 14px; line-height: 1;
+  }
+  .pv2-sub { font-size: 13px; color: var(--ink-3); margin: 0 0 18px; line-height: 1.5; }
+  .pv2-list { list-style: none; padding: 0; margin: auto 0 0; display: grid; gap: 12px; font-size: 13px; }
+  .pv2-list li { display: grid; grid-template-columns: 14px 1fr auto; gap: 10px; align-items: center; }
+  .pv2-list .pip { width: 8px; height: 8px; border-radius: 50%; background: var(--pass); }
+  .pv2-list .pip.hold { background: var(--hold); }
+  .pv2-list .meta { font-family: var(--mono); font-size: 10px; color: var(--ink-3); letter-spacing: 0.06em; }
+
+  @media (max-width: 880px) {
+    .hero, .logo-grid, .swatches, .type-grid, .voice-grid, .preview-grid, .anatomy {
+      grid-template-columns: 1fr;
+    }
+    .swatches { grid-template-columns: 1fr 1fr; }
+    .verdict-row { grid-template-columns: 1fr; }
+    .section-head { grid-template-columns: 1fr; gap: 4px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Brand System · v0.2 · Parakh</p>
+      <h1><span class="deva">परख</span><em>karo.</em></h1>
+      <p class="lede">Parakh is the assayer in your pocket. <em>Parakh</em> means to test, to examine, to appraise — the word a jeweller uses for gold. We do the same for fruit and vegetables, before you buy.</p>
+    </div>
+    <div class="hero-meta">
+      <span><b>Name</b> Parakh · परख</span>
+      <span><b>Pronunciation</b> /pə.rəkʰ/</span>
+      <span><b>Meaning</b> to test, appraise</span>
+      <span><b>Stance</b> The assayer of fresh produce</span>
+      <span><b>Built for</b> Indian markets, then everywhere</span>
+    </div>
+  </section>
+
+  <!-- 01 LOGO -->
+  <section class="section">
+    <header class="section-head">
+      <span class="section-num">01 / Logo</span>
+      <div>
+        <h2 class="section-title">Bilingual lockup &amp; <em>assay stamp</em></h2>
+        <p class="section-sub">A bilingual wordmark — Devanagari "परख" sits alongside the Latin "Parakh" — separated by a hairline rule, like a hallmark on a piece of gold. The standalone mark is a circular assay stamp with "परख" at its center.</p>
+      </div>
+    </header>
+
+    <div class="logo-grid">
+      <div class="logo-card">
+        <span class="wordmark">
+          <span class="deva">परख</span>
+          <span class="rule"></span>
+          <span class="latin">Parakh</span>
+        </span>
+        <span class="logo-meta">Primary · paper</span>
+      </div>
+      <div class="logo-card dark">
+        <span class="wordmark wordmark-sm">
+          <span class="deva">परख</span>
+          <span class="rule"></span>
+          <span class="latin">Parakh</span>
+        </span>
+        <span class="logo-meta">Reverse · ink</span>
+      </div>
+      <div class="logo-card tilak">
+        <span class="wordmark wordmark-sm">
+          <span class="deva">परख</span>
+          <span class="rule"></span>
+          <span class="latin">Parakh</span>
+        </span>
+        <span class="logo-meta">Knockout · tilak</span>
+      </div>
+    </div>
+
+    <div class="anatomy" style="margin-top: 16px;">
+      <div class="anatomy-card">
+        <p class="eyebrow" style="margin: 0 0 6px;">App icon · Assay stamp</p>
+        <div class="stamp-wrap">
+          <div class="stamp">
+            <svg viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="92" fill="none" stroke="#141210" stroke-width="2" class="ring"/>
+              <circle cx="100" cy="100" r="82" fill="none" stroke="#141210" stroke-width="0.75" class="ring" stroke-dasharray="2 4"/>
+              <circle cx="100" cy="100" r="68" fill="none" stroke="#141210" stroke-width="1.5" class="ring"/>
+              <!-- micro text along outer ring -->
+              <defs>
+                <path id="ring-path" d="M 100,100 m -78,0 a 78,78 0 1,1 156,0 a 78,78 0 1,1 -156,0"/>
+              </defs>
+              <text font-family="JetBrains Mono" font-size="7" letter-spacing="3" fill="#141210" class="micro">
+                <textPath href="#ring-path" startOffset="0">PARAKH · परख · TEST · ASSAY · APPRAISE · PARAKH · परख · </textPath>
+              </text>
+              <!-- four hash marks -->
+              <line x1="100" y1="14" x2="100" y2="22" stroke="#C25A1F" stroke-width="2"/>
+              <line x1="100" y1="178" x2="100" y2="186" stroke="#C25A1F" stroke-width="2"/>
+              <line x1="14" y1="100" x2="22" y2="100" stroke="#C25A1F" stroke-width="2"/>
+              <line x1="178" y1="100" x2="186" y2="100" stroke="#C25A1F" stroke-width="2"/>
+            </svg>
+            <div class="deva-center">परख</div>
+          </div>
+        </div>
+        <ul class="callouts">
+          <li><span>01</span> Outer ring — micro-set: PARAKH · परख · TEST · ASSAY</li>
+          <li><span>02</span> Inner ring — frames the seal</li>
+          <li><span>03</span> Tilak hash marks at cardinals</li>
+          <li><span>04</span> Devanagari "परख" — the testimony</li>
+        </ul>
+      </div>
+
+      <div class="anatomy-card">
+        <p class="eyebrow" style="margin: 0 0 12px;">Wordmark · construction</p>
+        <div class="construct">
+          <div class="construct-rule cap"><span>CAP</span></div>
+          <div class="construct-rule xh"><span>X-HEIGHT</span></div>
+          <div class="construct-rule base"><span>BASELINE</span></div>
+          <div class="construct-mark">Parakh</div>
+          <div class="construct-callout">
+            <span class="co-line"></span>
+            <span class="co-text"><b>FRAUNCES 144</b><br/>opsz 144 · light</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 COLOR -->
+  <section class="section">
+    <header class="section-head">
+      <span class="section-num">02 / Color</span>
+      <div>
+        <h2 class="section-title">Ink, paper, and <em>tilak saffron</em></h2>
+        <p class="section-sub">Warm paper as ground. Ink as voice. Tilak Saffron — the color of an assayer's mark — for the verdict, the seal, and anything that demands trust. A secondary hallmark gold appears in fine accents only.</p>
+      </div>
+    </header>
+
+    <div class="swatches">
+      <div class="swatch">
+        <div class="swatch-chip" style="background: var(--ink);">
+          <span class="swatch-tag">Core · 01</span>
+          <span class="swatch-name">Ink</span>
+        </div>
+        <div class="swatch-meta"><b>#141210</b><span>oklch 18% .005 60</span></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-chip on-light" style="background: var(--paper);">
+          <span class="swatch-tag">Core · 02</span>
+          <span class="swatch-name">Paper</span>
+        </div>
+        <div class="swatch-meta"><b>#F4EEE2</b><span>oklch 94% .02 80</span></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-chip" style="background: var(--tilak);">
+          <span class="swatch-tag">Accent</span>
+          <span class="swatch-name">Tilak</span>
+        </div>
+        <div class="swatch-meta"><b>#C25A1F</b><span>oklch 56% .15 45</span></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-chip" style="background: var(--gold);">
+          <span class="swatch-tag">Hallmark</span>
+          <span class="swatch-name">Gold</span>
+        </div>
+        <div class="swatch-meta"><b>#B68A2E</b><span>oklch 62% .11 80</span></div>
+      </div>
+    </div>
+
+    <p class="eyebrow" style="margin: 30px 0 12px;">Verdict palette · the assayer's mark</p>
+    <div class="verdict-row">
+      <div class="verdict pass">
+        <span class="verdict-bar"></span>
+        <span class="verdict-stamp">Pass <span class="deva-tag">· खरा</span></span>
+        <p class="verdict-headline">Sound to the test.</p>
+        <p class="verdict-sub">Use today or tomorrow for best taste.</p>
+      </div>
+      <div class="verdict hold">
+        <span class="verdict-bar"></span>
+        <span class="verdict-stamp">Hold <span class="deva-tag">· ठीक</span></span>
+        <p class="verdict-headline">Past prime.</p>
+        <p class="verdict-sub">Cook within 24 hours; not for raw use.</p>
+      </div>
+      <div class="verdict skip">
+        <span class="verdict-bar"></span>
+        <span class="verdict-stamp">Skip <span class="deva-tag">· खोटा</span></span>
+        <p class="verdict-headline">Adulterated.</p>
+        <p class="verdict-sub">Surface signals suggest dye or carbide ripening.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 TYPE -->
+  <section class="section">
+    <header class="section-head">
+      <span class="section-num">03 / Type</span>
+      <div>
+        <h2 class="section-title">Devanagari, Latin display & <em>instrument readout</em></h2>
+        <p class="section-sub">Tiro Devanagari Hindi for "परख" — formal, lapidary, made for legibility at every size. Fraunces in light italic for English display — high-contrast, certificate-of-authenticity feel. Inter for body. JetBrains Mono for measurements and codes.</p>
+      </div>
+    </header>
+
+    <div class="type-grid">
+      <div class="type-card">
+        <p class="label"><b>Devanagari display</b> · Tiro Devanagari Hindi</p>
+        <p class="deva-sample"><em>परख</em> करो।<br/>खरा है।</p>
+        <div class="type-spec"><span><b>Used for</b> brand mark, verdicts</span><span><b>Pair</b> with Fraunces</span></div>
+      </div>
+      <div class="type-card">
+        <p class="label"><b>Latin display</b> · Fraunces, opsz 144, italic</p>
+        <p class="display-sample"><em>Parakh.</em><br/>Sound to<br/>the test.</p>
+        <div class="type-spec"><span><b>Weight</b> 300/400</span><span><b>Tracking</b> -1.2%</span><span><b>Used for</b> verdicts</span></div>
+      </div>
+      <div class="type-card">
+        <p class="label"><b>Body</b> · Inter</p>
+        <p class="body-sample">An assayer in your pocket. Scan any fruit or vegetable. We test for ripeness, surface dyes, and carbide treatment — and tell you straight: pass, hold, or skip.</p>
+        <div class="type-spec"><span><b>Weight</b> 400/500</span><span><b>Size</b> 15–17</span><span><b>Used for</b> body, UI</span></div>
+      </div>
+      <div class="type-card">
+        <p class="label"><b>Mono</b> · JetBrains Mono</p>
+        <p class="mono-sample">ASSAY_ID <span class="dim">→</span> 0241-A · 02:14 IST<br/>SUBJECT &nbsp;<span class="dim">→</span> WATERMELON · 4.1KG<br/>VERDICT &nbsp;<span class="dim">→</span> PASS · खरा · 92%<br/>METHOD &nbsp;<span class="dim">→</span> COLOR · SURFACE · STEM</p>
+        <div class="type-spec"><span><b>Weight</b> 500</span><span><b>Tracking</b> +4%</span><span><b>Used for</b> codes, meta</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 VOICE -->
+  <section class="section">
+    <header class="section-head">
+      <span class="section-num">04 / Voice</span>
+      <div>
+        <h2 class="section-title">The assayer's voice — <em>certain, unhurried</em></h2>
+        <p class="section-sub">Parakh speaks like an old jeweller examining a piece — quietly confident, never theatrical. Verdicts are short and final. Bilingual touches are warm but never decorative.</p>
+      </div>
+    </header>
+
+    <div class="voice-grid">
+      <div class="voice-card">
+        <p class="voice-tag">Verdict · Pass</p>
+        <p class="voice-line">"<span class="deva">खरा</span> है. Buy it. Use today."</p>
+        <p class="voice-do">Do · plain · time-bound</p>
+        <p class="voice-dont">Don't · "Optimal ripeness detected!"</p>
+      </div>
+      <div class="voice-card">
+        <p class="voice-tag">Verdict · Skip</p>
+        <p class="voice-line">"Surface dye on the skin.<br/>Not for raw eating."</p>
+        <p class="voice-do">Do · honest · actionable</p>
+        <p class="voice-dont">Don't · "Possible adulteration concern."</p>
+      </div>
+      <div class="voice-card">
+        <p class="voice-tag">Brand line</p>
+        <p class="voice-line"><span class="deva">परख</span> करो. Then buy.</p>
+        <p class="voice-do">Do · brand-as-verb</p>
+        <p class="voice-dont">Don't · "Welcome to smarter shopping."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 IN USE -->
+  <section class="section">
+    <header class="section-head">
+      <span class="section-num">05 / In use</span>
+      <div>
+        <h2 class="section-title">The system, <em>deployed</em></h2>
+        <p class="section-sub">Splash with the assay stamp · scan in motion · the verdict card on paper.</p>
+      </div>
+    </header>
+
+    <div class="preview-grid">
+      <!-- splash -->
+      <div class="phone dark">
+        <div class="phone-status"><span>9:41</span><span class="status-dots"><i></i><i></i><i></i></span></div>
+        <div class="pv1-stage">
+          <div style="text-align:center;">
+            <div class="pv1-stamp">
+              <svg viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="92" fill="none" stroke="#F4EEE2" stroke-width="2"/>
+                <circle cx="100" cy="100" r="82" fill="none" stroke="#F4EEE2" stroke-width="0.75" stroke-dasharray="2 4"/>
+                <circle cx="100" cy="100" r="68" fill="none" stroke="#F4EEE2" stroke-width="1.5"/>
+                <line x1="100" y1="14" x2="100" y2="22" stroke="#C25A1F" stroke-width="2"/>
+                <line x1="100" y1="178" x2="100" y2="186" stroke="#C25A1F" stroke-width="2"/>
+                <line x1="14" y1="100" x2="22" y2="100" stroke="#C25A1F" stroke-width="2"/>
+                <line x1="178" y1="100" x2="186" y2="100" stroke="#C25A1F" stroke-width="2"/>
+              </svg>
+              <div class="deva-center">परख</div>
+            </div>
+            <div class="pv1-mark">Parakh</div>
+          </div>
+        </div>
+        <p class="pv1-tag">परख करो · trust, then buy</p>
+      </div>
+
+      <!-- scan -->
+      <div class="phone dark">
+        <div class="phone-status" style="color: var(--paper);"><span>9:41</span><span class="status-dots"><i></i><i></i><i></i></span></div>
+        <div class="pv3-stage">
+          <div class="pv3-reticle">
+            <span class="pv3-cor tl"></span><span class="pv3-cor tr"></span>
+            <span class="pv3-cor bl"></span><span class="pv3-cor br"></span>
+            <div class="pv3-scan"></div>
+          </div>
+          <p class="pv3-cap">Assaying · watermelon</p>
+        </div>
+      </div>
+
+      <!-- verdict -->
+      <div class="phone">
+        <div class="phone-status" style="color: var(--ink);"><span>9:41</span><span class="status-dots"><i></i><i></i><i></i></span></div>
+        <div class="pv2-body">
+          <p class="pv2-eyebrow">Verdict · 02:14 IST · Assay 0241-A</p>
+          <span class="pv2-stamp">Pass <span style="font-family: var(--deva); font-size: 13px; letter-spacing: 0; text-transform: none; font-weight: 400;">· खरा</span></span>
+          <h3 class="pv2-h">Sound to the test.</h3>
+          <p class="pv2-deva">खरा है।</p>
+          <p class="pv2-sub">Slice tonight. Best flavour next 36 hours.</p>
+          <ul class="pv2-list">
+            <li><span class="pip"></span><span>Color & ripeness</span><span class="meta">PASS</span></li>
+            <li><span class="pip"></span><span>Surface & condition</span><span class="meta">PASS</span></li>
+            <li><span class="pip hold"></span><span>Stem freshness</span><span class="meta">FAIR</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
