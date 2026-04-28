@@ -476,7 +476,6 @@ function SignUp({ onNext, onBack }) {
         body: JSON.stringify({
           name, phone: phoneDigits,
           dial: country.dial, country: country.name,
-          userAgent: navigator.userAgent,
         }),
       }).catch((e) => console.warn("sheet save failed:", e));
     }
