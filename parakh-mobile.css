@@ -749,12 +749,15 @@ body {
   position: absolute;
   left: 0; right: 0; bottom: 0;
   z-index: 4;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
   padding: 18px 24px 32px;
   background: linear-gradient(to top, rgba(12,8,5,0.85), rgba(12,8,5,0));
 }
+.m-cap-bar > .m-cap-ghost:first-of-type { justify-self: start; }
+.m-cap-bar > .m-cap-ghost:last-of-type { justify-self: end; }
+.m-cap-bar > .m-cap-shutter { justify-self: center; }
 .m-cap-ghost {
   font-family: var(--mono);
   font-size: 11px;

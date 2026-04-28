@@ -484,8 +484,7 @@ function SignUp({ onNext, onBack }) {
     <>
     <div className="m-screen">
       <div className="m-content m-top screen-enter">
-        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom: 16}}>
-          <BackLink onClick={() => stage === "otp" ? setStage("details") : onBack()}/>
+        <div style={{display:'flex', justifyContent:'flex-end', alignItems:'center', marginBottom: 16}}>
           <Progress idx={2}/>
         </div>
 
