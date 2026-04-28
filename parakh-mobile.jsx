@@ -202,7 +202,7 @@ const SCAN_TESTS = [
   { key: "pest", label: "Pesticide", deva: "कीटनाशक", meta: "SHEEN" },
 ];
 
-function Scanner({ onComplete, onBack, onCaptured, isSignedUp, pendingImage, onAbout }) {
+function Scanner({ onComplete, onBack, onAbout }) {
   const [phase, setPhase] = useState("framing"); // framing | scanning | error
   const [active, setActive] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -327,23 +327,8 @@ function Scanner({ onComplete, onBack, onCaptured, isSignedUp, pendingImage, onA
   const handleCapture = () => {
     const url = captureFromVideo();
     if (!url) { setError("Couldn't capture frame"); setPhase("error"); return; }
-    // New users: freeze the image, route to signup. We'll auto-scan after they sign up.
-    if (!isSignedUp && onCaptured) {
-      setCapturedUrl(url);
-      stopCamera();
-      onCaptured(url);
-      return;
-    }
     sendImage(url);
   };
-
-  // After signup, the user comes back here with a pending image — auto-scan it
-  useEffect(() => {
-    if (isSignedUp && pendingImage) {
-      sendImage(pendingImage);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleFile = (e) => {
     const f = e.target.files?.[0];
@@ -758,10 +743,12 @@ function App() {
   const [idx, setIdx] = useState(() => {
     const h = location.hash.replace("#","");
     const i = STEPS.indexOf(h);
-    return i >= 0 ? i : 0;
+    if (i >= 0) return i;
+    let stored = null;
+    try { stored = JSON.parse(localStorage.getItem(USER_KEY) || "null"); } catch {}
+    return stored ? STEPS.indexOf("scanner") : STEPS.indexOf("signup");
   });
   const [result, setResult] = useState(null);
-  const [pendingImage, setPendingImage] = useState(null);
 
   // Persist user across reloads
   useEffect(() => {
@@ -782,13 +769,6 @@ function App() {
   const goToAbout = () => setIdx(STEPS.indexOf("about"));
   const cur = STEPS[idx];
 
-  // New user takes a photo → cache image, route to signup
-  const handleCaptured = (dataUrl) => {
-    setPendingImage(dataUrl);
-    setIdx(STEPS.indexOf("signup"));
-  };
-
-  // After signup, the scanner re-mounts and auto-scans the cached image
   const handleSignupDone = (u) => {
     setUser(u);
     setIdx(STEPS.indexOf("scanner"));
@@ -796,7 +776,6 @@ function App() {
 
   const handleScanComplete = (data) => {
     setResult(data);
-    setPendingImage(null);
     setIdx(STEPS.indexOf("verdict"));
   };
 
@@ -806,19 +785,16 @@ function App() {
   if (cur === "scanner") {
     screen = (
       <Scanner
-        key={"sc"+idx+(pendingImage ? ":pi" : "")}
-        isSignedUp={!!user}
-        pendingImage={pendingImage}
-        onCaptured={handleCaptured}
+        key={"sc"+idx}
         onComplete={handleScanComplete}
         onBack={goToScanner}
         onAbout={goToAbout}
       />
     );
   }
-  if (cur === "signup")  screen = <SignUp onNext={handleSignupDone} onBack={goToScanner}/>;
+  if (cur === "signup")  screen = <SignUp onNext={handleSignupDone} onBack={goToAbout}/>;
   if (cur === "verdict") screen = <Verdict name={user?.name} result={result} onRestart={restart} onRetake={goToScanner}/>;
-  if (cur === "about")   screen = <About onBack={goToScanner}/>;
+  if (cur === "about")   screen = <About onBack={user ? goToScanner : () => setIdx(STEPS.indexOf("signup"))}/>;
 
   return (
     <div data-screen-label={`${String(idx+1).padStart(2,'0')} ${cur}`} style={{height:'100%'}}>
