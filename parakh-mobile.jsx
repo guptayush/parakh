@@ -125,6 +125,12 @@ function BackLink({ onClick }) {
 
 /* ---------- 01 Splash ---------- */
 function Splash({ onNext }) {
+  useEffect(() => {
+    // Stamp animation finishes ~1700ms; give a beat to read the tagline.
+    const t = setTimeout(() => onNext && onNext(), 2200);
+    return () => clearTimeout(t);
+  }, [onNext]);
+
   return (
     <div className="m-screen dark">
       <div className="m-splash">
@@ -134,9 +140,6 @@ function Splash({ onNext }) {
         </div>
         <h1 className="m-splash-lockup">Parakh.</h1>
         <p className="m-splash-tag"><span className="deva-tag">परख</span> the assayer of fresh produce</p>
-      </div>
-      <div className="m-splash-cta">
-        <button className="m-btn tilak" onClick={onNext}>Begin</button>
       </div>
     </div>
   );
