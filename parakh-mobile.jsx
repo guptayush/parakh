@@ -102,7 +102,7 @@ function CountryPicker({ open, onClose, onPick, current }) {
 }
 
 /* ---------- Steps ---------- */
-const STEPS = ["scanner", "signup", "verdict", "about"];
+const STEPS = ["splash", "scanner", "signup", "verdict", "about"];
 
 function Progress({ idx, dark }) {
   return (
@@ -478,6 +478,7 @@ function SignUp({ onNext, onBack }) {
   const verify = () => { if (otpComplete) onNext && onNext({ name, phone: phoneDigits }); };
 
   return (
+    <>
     <div className="m-screen">
       <div className="m-content m-top screen-enter">
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom: 16}}>
@@ -513,11 +514,6 @@ function SignUp({ onNext, onBack }) {
                 <input className="m-input" placeholder="98765 43210" value={phone} onChange={e => setPhone(formatPhone(e.target.value))} inputMode="numeric"/>
               </div>
             </div>
-            <CountryPicker
-              open={pickerOpen}
-              current={country}
-              onClose={() => setPickerOpen(false)}
-              onPick={(c) => { setCountry(c); setPickerOpen(false); }}/>
             <div className="m-bottom-bar">
               <button className="m-btn tilak" onClick={sendOtp} disabled={!canSendOtp}>Continue to scan</button>
             </div>
@@ -552,6 +548,12 @@ function SignUp({ onNext, onBack }) {
         )}
       </div>
     </div>
+    <CountryPicker
+      open={pickerOpen}
+      current={country}
+      onClose={() => setPickerOpen(false)}
+      onPick={(c) => { setCountry(c); setPickerOpen(false); }}/>
+    </>
   );
 }
 
@@ -744,9 +746,7 @@ function App() {
     const h = location.hash.replace("#","");
     const i = STEPS.indexOf(h);
     if (i >= 0) return i;
-    let stored = null;
-    try { stored = JSON.parse(localStorage.getItem(USER_KEY) || "null"); } catch {}
-    return stored ? STEPS.indexOf("scanner") : STEPS.indexOf("signup");
+    return STEPS.indexOf("splash");
   });
   const [result, setResult] = useState(null);
 
@@ -782,6 +782,7 @@ function App() {
   const restart = () => { setResult(null); goToScanner(); };
 
   let screen;
+  if (cur === "splash")  screen = <Splash onNext={() => setIdx(STEPS.indexOf(user ? "scanner" : "signup"))}/>;
   if (cur === "scanner") {
     screen = (
       <Scanner
@@ -792,7 +793,7 @@ function App() {
       />
     );
   }
-  if (cur === "signup")  screen = <SignUp onNext={handleSignupDone} onBack={goToAbout}/>;
+  if (cur === "signup")  screen = <SignUp onNext={handleSignupDone} onBack={() => setIdx(STEPS.indexOf("splash"))}/>;
   if (cur === "verdict") screen = <Verdict name={user?.name} result={result} onRestart={restart} onRetake={goToScanner}/>;
   if (cur === "about")   screen = <About onBack={user ? goToScanner : () => setIdx(STEPS.indexOf("signup"))}/>;
 
