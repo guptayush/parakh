@@ -487,7 +487,12 @@ body {
 
 /* country picker — bottom sheet inside the iPhone frame */
 .m-cp {
-  position: absolute; inset: 0;
+  position: fixed;
+  top: 0; bottom: 0;
+  left: 50%;
+  width: 100%;
+  max-width: 480px;
+  transform: translateX(-50%);
   z-index: 90;
   background: rgba(20,18,16,0);
   pointer-events: none;
